@@ -54,7 +54,7 @@ var port = flag.Uint("p", defaultPort(), "port")
 var basedir = flag.String("basedir", "", "base directory")
 
 // base of port numbers for app
-var baseport = flag.Uint("b", 5000, "base number of port")
+var baseport = flag.Uint("b", defaultOpenPort(), "base number of port")
 
 var maxProcNameLength = 0
 
@@ -99,6 +99,18 @@ func defaultPort() uint {
 		}
 	}
 	return 8555
+}
+
+// default port
+func defaultOpenPort() uint {
+	s := os.Getenv("PORT")
+	if s != "" {
+		i, err := strconv.Atoi(s)
+		if err == nil {
+			return uint(i)
+		}
+	}
+	return 9999
 }
 
 // command: check. show Procfile entries.
